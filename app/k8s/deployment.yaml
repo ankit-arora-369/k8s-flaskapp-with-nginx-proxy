@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-flask-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-flask-app
+  template:
+    metadata:
+      labels:
+        app: simple-flask-app
+    spec:
+      containers:
+        - name: simple-flask-app
+          image: docker.io/aroraankit/simple-flask-app:v1  ## Change it to the image you have pushed to your registry.
+          ports:
+            - containerPort: 8083

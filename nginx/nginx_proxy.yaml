@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-proxy
+  labels:
+    run: nginx-proxy
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    run: nginx-proxy
+  type: LoadBalancer
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: nginx-proxy
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  minReadySeconds: 10
+  template:
+    metadata:
+      annotations:
+      labels:
+        run: nginx-proxy
+        svc: nginx-proxy
+    spec:
+      containers:
+      - name: nginx-proxy
+        image: docker.io/aroraankit/nginx_proxy:v2
+        command: ["/bin/sh", "-c"]
+        args: ['nginx -t && /etc/init.d/nginx start && tail -f /var/log/nginx/*.log']
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

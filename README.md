@@ -12,13 +12,12 @@ As we know, we can also use nginx-ingress-controller in the cluster and also use
 
 ### Prerequisites
 
-We need:
+Following are required:
 
 ```
 A k8s cluster(minikube on local system)
 Docker(Installed)
 Access to docker registry(to push image, so that k8s can pull them)
-
 ```
 
 ### Setup
